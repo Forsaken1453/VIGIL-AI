@@ -12,6 +12,8 @@
 Deteksi helmet, rompi, sarung tangan, sepatu, kacamata keamanan — serta
 menandai pekerja yang **tidak memakai** APD.
 
+![Demo](docs/demo.gif)
+
 </div>
 
 ---
@@ -50,7 +52,18 @@ visual daripada melihat helmeter secara langsung. Pada dataset ini `no_boots`
 juga hanya punya 88 instance di train (paling langka). Ini limitasi dataset,
 bukan limitasi arsitektur.
 
-![Demo](docs/demo_custom_model.jpg)
+### Preview aplikasi
+
+![GUI](docs/gui_live_fixed.png)
+
+GUI desktop (CustomTkinter) berjalan real-time dari webcam: bounding box per
+kelas, HUD FPS/inference, panel statistik, dan event log untuk tiap pelanggaran.
+Kamera **otomatis dipilih** — sistem mengukur brightness tiap kamera dan
+melewati yang tertutup privacy shutter (frame hitam).
+
+### Hasil deteksi pada test set
+
+![Test set](docs/demo_custom_model.jpg)
 
 ---
 
@@ -94,7 +107,20 @@ dan perekaman saling independen — masing-masing bisa diuji tanpa GUI.
 
 ---
 
-## 🚀 Instalasi
+## ⚡ Cara Cepat
+
+Sudah punya `HelmetGuard.exe`?
+
+```powershell
+.\create_shortcut.ps1     # buat shortcut di Desktop + Start Menu
+```
+
+Kalau belum, jalankan sekali:
+```powershell
+.\.venv\Scripts\python.exe scripts\build_exe.py
+```
+
+## 🚀 Instalasi dari source
 
 ```powershell
 # 1. Virtual environment
