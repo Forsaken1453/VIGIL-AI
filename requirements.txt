@@ -1,0 +1,11 @@
+# HelmetGuard AI - dependencies
+# PyTorch + Ultralytics diinstall terpisah (CUDA cu128), lihat README
+
+ultralytics>=8.3.0
+opencv-python>=4.10.0
+customtkinter>=5.2.2
+pillow>=10.4.0
+pandas>=2.2.0
+matplotlib>=3.9.0
+numpy>=1.26.0
+pyinstaller>=6.10.0

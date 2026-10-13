@@ -1,0 +1,51 @@
+# --- Environment -----------------------------------------------------------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# --- Dataset (terlalu besar untuk GitHub; unduh ulang lewat README) ------
+data/images/
+data/labels/
+data/**/*.cache
+data/*.cache
+*.cache
+
+# --- Output training (regenerate lewat scripts/train.py) ------------------
+runs/
+*.spec
+
+# --- Hasil deteksi ---------------------------------------------------------
+output/
+
+# --- Build PyInstaller (4.5 GB, rebuild via scripts/build_exe.py) ---------
+build/
+dist/
+
+# --- Model -----------------------------------------------------------------
+# Model UTAMA sengaja di-commit (18 MB) supaya orang bisa langsung pakai.
+# Varian tambahan tidak perlu - unduh dari drive atau latih ulang.
+weights/*_11n.pt
+weights/*_11n.metrics.json
+weights/*_11s.pt
+weights/*_11s.metrics.json
+
+# --- Model COCO pretrained (bisa diunduh otomatis oleh Ultralytics) -------
+yolo11n.pt
+yolo11s.pt
+yolo26n.pt
+
+# --- IDE / OS --------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+ehthumbs.db
+
+# --- Docs generated (opsional) --------------------------------------------
+docs/*.gif
