@@ -2,7 +2,7 @@
 
 # VIGIL
 
-**Real-time Construction PPE Detection** — YOLO11 + PyTorch, 100% on-device
+**Real-time Construction Safety Helmet & APD Detection** — YOLO11 + PyTorch, 100% on-device
 
 *Dari Latin* **vigilare** — *berjaga*. Kamera yang tidak pernah tidur, menandai
 pelanggaran di detik yang sama — semua berjalan di GPU laptop 6 GB.
@@ -201,7 +201,7 @@ VIGIL-AI\
 
 ## 📦 Dataset
 
-**Ultralytics Construction-PPE** — 1.416 gambar (1.132 train / 143 val / 141 test),
+**Ultralytics Construction-APD** — 1.416 gambar (1.132 train / 143 val / 141 test),
 11 kelas, foto pekerja konstruksi nyata dengan maupun tanpa APD.
 
 - Sumber: <https://docs.ultralytics.com/datasets/detect/construction-ppe/>
@@ -220,6 +220,27 @@ Expand-Archive construction-ppe.zip -DestinationPath data
 
 Semua instalasi & cache diarahkan ke drive D: agar tidak menyentuh drive C:
 `PIP_CACHE_DIR`, `TEMP`, `TMP`, `TORCH_HOME`, `HF_HOME`, `YOLO_CONFIG_DIR`.
+
+### 💾 Mengelola ukuran disk
+
+Project ini memakan **~10 GB** (sebagian besar dependensi, bukan source code):
+
+| Item | Ukuran | Keterangan |
+|---|---:|---|
+| `.venv/` | ~4.9 GB | Python + PyTorch + CUDA. Hapus & recreate bila perlu |
+| `dist/` | ~4.5 GB | Hasil PyInstaller (`VIGIL.exe`). Rebuild via `scripts/build_exe.py` |
+| `data/` | ~171 MB | Dataset. Hapus & unduh ulang (link di atas) |
+| `weights/` | ~42 MB | **Simpan** — model hasil training |
+| `D:\Temp\pip-cache` | 0–3 GB | Cache unduhan pip. **Aman dihapus kapan saja** |
+
+Membersihkan yang aman:
+
+```powershell
+Remove-Item 'D:\Temp\pip-cache\*' -Recurse -Force   # hemat ~2.8 GB
+Remove-Item 'D:\Project\VIGIL\dist' -Recurse -Force  # hemat ~4.5 GB (exe hilang)
+```
+
+Source code project ini sendiri hanya **< 1 MB**.
 
 ## 📝 Lisensi
 

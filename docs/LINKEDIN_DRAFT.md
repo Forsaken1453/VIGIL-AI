@@ -58,7 +58,7 @@ ketiadaan footwear, belum." Itu lebih berguna daripada klaim muluk.
 
 **Stack:** Python 3.12 · PyTorch 2.11 (CUDA 12.8) · Ultralytics YOLO11 ·
 CustomTkinter · OpenCV
-**Dataset:** Ultralytics Construction-PPE (1.416 gambar, AGPL-3.0)
+**Dataset:** Ultralytics Construction-APD (1.416 gambar, AGPL-3.0)
 **Repo:** [link]
 
 Diskusi yang welcome — terutama: bagaimana cara menaikkan performa kelas
