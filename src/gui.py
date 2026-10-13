@@ -1,5 +1,5 @@
 """
-HelmetGuard AI - Desktop GUI (CustomTkinter).
+VIGIL - Desktop GUI (CustomTkinter).
 
 Desain:
     - Dark theme modern, bukan Tkinter mentah
@@ -35,7 +35,7 @@ from src.config import (  # noqa: E402
     VIOLATION_CLASSES,
     ensure_dirs,
 )
-from src.detector import FrameResult, HelmetDetector  # noqa: E402
+from src.detector import FrameResult, VigilDetector  # noqa: E402
 from src.recorder import Recorder  # noqa: E402
 from src.visualize import compose  # noqa: E402
 
@@ -68,7 +68,7 @@ def _resolve_weights(name: str) -> Path:
     return candidates[0]
 
 
-class HelmetGuardApp(ctk.CTk):
+class VigilApp(ctk.CTk):
     """Jendela utama."""
 
     def __init__(self) -> None:
@@ -76,13 +76,13 @@ class HelmetGuardApp(ctk.CTk):
 
         ensure_dirs()
 
-        self.title("HelmetGuard AI - Real-Time Safety Helmet Detection")
+        self.title("VIGIL — Real-Time PPE Detection")
         self._center_window(width=1360, height=820)
         self.minsize(1150, 700)
         self.configure(fg_color=BG_DEEP)
 
         # State
-        self.detector: HelmetDetector | None = None
+        self.detector: VigilDetector | None = None
         self.cam: VideoSource | None = None
         self.recorder: Recorder | None = None
         self.running = False
@@ -125,7 +125,7 @@ class HelmetGuardApp(ctk.CTk):
         header.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(
-            header, text="HelmetGuard AI", font=ctk.CTkFont(size=20, weight="bold"),
+            header, text="VIGIL", font=ctk.CTkFont(size=20, weight="bold"),
             text_color=FG,
         ).grid(row=0, column=0, padx=(20, 0), pady=12, sticky="w")
 
@@ -250,8 +250,8 @@ class HelmetGuardApp(ctk.CTk):
         if not options:
             options = ["yolo11n.pt", "yolo11s.pt"]
 
-        # Default: helmet_detector.pt kalau ada, selain itu yang pertama
-        default = "helmet_detector.pt" if "helmet_detector.pt" in options else options[0]
+        # Default: vigil_ppe.pt kalau ada, selain itu yang pertama
+        default = "vigil_ppe.pt" if "vigil_ppe.pt" in options else options[0]
         if default not in options:
             options.insert(0, default)
 
@@ -371,7 +371,7 @@ class HelmetGuardApp(ctk.CTk):
         """Loop inferensi di thread terpisah."""
         try:
             self._set_status("Memuat model...", WARN)
-            detector = HelmetDetector(weights, conf=self.slider_conf.get(), imgsz=IMGSZ, device=0)
+            detector = VigilDetector(weights, conf=self.slider_conf.get(), imgsz=IMGSZ, device=0)
             self.detector = detector
             self._set_status("GPU aktif", OK)
             self._log(f"model dimuat ({detector.names})", OK)
@@ -428,7 +428,7 @@ class HelmetGuardApp(ctk.CTk):
             self._set_status("Siap", FG_DIM)
 
     # ---------------------------------------------------------------- pump
-    def _pump(self) -> """HelmetGuardApp""" | None:
+    def _pump(self) -> """VigilApp""" | None:
         """Tarik frame dari worker, konversi ke PhotoImage, tampilkan. Dipanggil ~30x/detik."""
         if self._frame_ready.is_set():
             self._frame_ready.clear()
@@ -481,7 +481,7 @@ class HelmetGuardApp(ctk.CTk):
 
 
 def main() -> int:
-    app = HelmetGuardApp()
+    app = VigilApp()
     app.mainloop()
     return 0
 

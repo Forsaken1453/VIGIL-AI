@@ -1,10 +1,16 @@
-# Draft LinkedIn Post
+# Draft LinkedIn Post — VIGIL
 
 ## Versi 2 — Problem → Solution → Result (paling direkomendasikan)
 
-> **Judul:** Saya membangun AI untuk memantau pemakaian helm di lokasi konstruksi — lalu mengukur hasilnya dengan jujur, termasuk bagian yang belum berhasil
+> **Judul:** VIGIL — saya membangun AI yang berjaga 24/7 di lokasi konstruksi, lalu mengukur hasilnya dengan jujur, termasuk bagian yang belum berhasil
 
 ---
+
+![demo](demo.gif)
+
+Saya menamai project ini **VIGIL** — dari Latin *vigilare*, "berjaga". Karena
+itu persis apa yang dia lakukan: kamera yang tidak pernah tidur, langsung
+menandai begitu ada pekerja yang tidak memakai helmeter.
 
 Masalah ini kelihatan sederhana: "deteksi orang yang pakai helm". Tapi begitu
 saya mulai dikerjakan, ternyata tidak sesederhana itu.
@@ -66,7 +72,7 @@ lebih masuk akal di sini?
 **From "AI can detect helmets" to "here's exactly how well, and here's where it
 breaks."**
 
-Saya baru saja menyelesaikan HelmetGuard AI — detektor APD konstruksi real-time
+Saya baru saja menyelesaikan VIGIL — detektor APD konstruksi real-time
 yang dilatih dari nol di laptop RTX 3050 6GB saya.
 
 📊 mAP@50 0.624 · ⚡ 84 FPS · ⏱️ training 25 menit

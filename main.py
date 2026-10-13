@@ -1,5 +1,5 @@
 """
-HelmetGuard AI - Entry point.
+VIGIL - Entry point.
 
 Jalankan GUI:      python main.py
 Jalankan CLI:      python scripts/run_cli.py --help

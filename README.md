@@ -1,8 +1,11 @@
 <div align="center">
 
-# ⛑️ HelmetGuard AI
+# VIGIL
 
-**Real-time Construction PPE Detection** — YOLO11 + PyTorch, 100% lokal di laptop
+**Real-time Construction PPE Detection** — YOLO11 + PyTorch, 100% on-device
+
+*Dari Latin* **vigilare** — *berjaga*. Kamera yang tidak pernah tidur, menandai
+pelanggaran di detik yang sama — semua berjalan di GPU laptop 6 GB.
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB)
 ![Ultralytics](https://img.shields.io/badge/YOLO-8.4-FF3333)
@@ -94,7 +97,7 @@ graph LR
     A[main.py] --> B[src/gui.py<br/>CustomTkinter UI]
     A --> C[scripts/run_cli.py<br/>CLI]
     B --> D[src/camera.py<br/>VideoSource]
-    B --> E[src/detector.py<br/>HelmetDetector]
+    B --> E[src/detector.py<br/>VigilDetector]
     B --> F[src/recorder.py<br/>MP4 + JSONL]
     E --> G[src/visualize.py<br/>bbox + HUD]
     D --> G
@@ -109,7 +112,7 @@ dan perekaman saling independen — masing-masing bisa diuji tanpa GUI.
 
 ## ⚡ Cara Cepat
 
-Sudah punya `HelmetGuard.exe`?
+Sudah punya `VIGIL.exe`?
 
 ```powershell
 .\create_shortcut.ps1     # buat shortcut di Desktop + Start Menu
@@ -141,13 +144,13 @@ pip install -r requirements.txt
 python main.py
 
 # CLI - webcam
-python scripts/run_cli.py --weights weights\helmet_detector.pt --source 0
+python scripts/run_cli.py --weights weights\vigil_ppe.pt --source 0
 
 # CLI - video + rekam + preview
-python scripts/run_cli.py --weights weights\helmet_detector.pt --source video.mp4 --record --show
+python scripts/run_cli.py --weights weights\vigil_ppe.pt --source video.mp4 --record --show
 
 # Batch - seluruh folder gambar
-python scripts/run_cli.py --weights weights\helmet_detector.pt --source data\images\test --record
+python scripts/run_cli.py --weights weights\vigil_ppe.pt --source data\images\test --record
 
 # Cek kamera yang tersedia
 python scripts\list_cameras.py
@@ -167,12 +170,12 @@ python scripts\compare_models.py
 ```
 
 Script training otomatis menyalin model terbaik ke `weights/` **hanya jika mAP-nya
-meningkat**, jadi `helmet_detector.pt` selalu berisi model terbaik.
+meningkat**, jadi `vigil_ppe.pt` selalu berisi model terbaik.
 
 ## 📁 Struktur Folder
 
 ```
-HelmetGuard-AI\
+VIGIL-AI\
 ├─ main.py                  # entry point GUI
 ├─ activate_env.ps1         # aktivasi env + alias (hg, hgcli)
 ├─ src\

@@ -1,4 +1,4 @@
-# HelmetGuard AI - dependencies
+# VIGIL - dependencies
 # PyTorch + Ultralytics diinstall terpisah (CUDA cu128), lihat README
 
 ultralytics>=8.3.0

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Buat shortcut HelmetGuard AI di Desktop + Start Menu.
+    Buat shortcut VIGIL di Desktop + Start Menu.
 
 .DESCRIPTION
     Installer 4.5 GB itu berlebihan untuk project ini. Yang kamu butuhkan
@@ -11,9 +11,9 @@
 #>
 $ErrorActionPreference = "Stop"
 
-$Exe    = Join-Path $PSScriptRoot "dist\HelmetGuard\HelmetGuard.exe"
+$Exe    = Join-Path $PSScriptRoot "dist\VIGIL\VIGIL.exe"
 $Folder = Split-Path $Exe -Parent
-$Icon   = Join-Path $PSScriptRoot "docs\helmetguard.ico"
+$Icon   = Join-Path $PSScriptRoot "docs\vigil.ico"
 
 if (-not (Test-Path $Exe)) {
     Write-Host "[!] EXE tidak ditemukan: $Exe" -ForegroundColor Red
@@ -35,7 +35,7 @@ function New-Shortcut([string]$path, [string]$target, [string]$workdir) {
 }
 
 $desktop = [Environment]::GetFolderPath("Desktop")
-$startMenu = Join-Path ([Environment]::GetFolderPath("Programs")) "HelmetGuard AI"
+$startMenu = Join-Path ([Environment]::GetFolderPath("Programs")) "VIGIL"
 
 # --- Buat Start Menu folder ---
 if (-not (Test-Path $startMenu)) {
@@ -43,13 +43,13 @@ if (-not (Test-Path $startMenu)) {
 }
 
 # --- Shortcut di Desktop & Start Menu ---
-New-Shortcut (Join-Path $desktop "HelmetGuard AI.lnk")  $Exe $Folder
-New-Shortcut (Join-Path $startMenu "HelmetGuard AI.lnk") $Exe $Folder
+New-Shortcut (Join-Path $desktop "VIGIL.lnk")  $Exe $Folder
+New-Shortcut (Join-Path $startMenu "VIGIL.lnk") $Exe $Folder
 
 Write-Host ""
 Write-Host "Selesai." -ForegroundColor Cyan
-Write-Host "  Desktop   : $desktop\HelmetGuard AI.lnk" -ForegroundColor Gray
-Write-Host "  Start Menu: Start Menu\HelmetGuard AI\HelmetGuard AI.lnk" -ForegroundColor Gray
+Write-Host "  Desktop   : $desktop\VIGIL.lnk" -ForegroundColor Gray
+Write-Host "  Start Menu: Start Menu\VIGIL\VIGIL.lnk" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Catatan: shortcut ini menunjuk ke folder di drive D:." -ForegroundColor Yellow
 Write-Host "Kalau folder dipindah, shortcut harus dibuat ulang." -ForegroundColor Yellow

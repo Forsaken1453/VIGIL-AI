@@ -1,9 +1,9 @@
 """
-CLI HelmetGuard - deteksi lewat terminal.
+CLI VIGIL - deteksi lewat terminal.
 
 Contoh:
-    python scripts/run_cli.py --weights weights/helmet_detector.pt --source 0
-    python scripts/run_cli.py --weights weights/helmet_detector.pt --record
+    python scripts/run_cli.py --weights weights/vigil_ppe.pt --source 0
+    python scripts/run_cli.py --weights weights/vigil_ppe.pt --record
 """
 
 from __future__ import annotations
@@ -19,13 +19,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.camera import VideoSource  # noqa: E402
 from src.config import BEST_MODEL, CAMERA_FPS, DEFAULT_CONF  # noqa: E402
-from src.detector import HelmetDetector  # noqa: E402
+from src.detector import VigilDetector  # noqa: E402
 from src.recorder import Recorder  # noqa: E402
 from src.visualize import compose  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="HelmetGuard AI - CLI detector")
+    p = argparse.ArgumentParser(description="VIGIL - CLI detector")
     p.add_argument("--weights", type=str, default=str(BEST_MODEL))
     p.add_argument("--source", default="0", help="indeks kamera, path video, atau path gambar")
     p.add_argument("--conf", type=float, default=DEFAULT_CONF)
@@ -42,9 +42,9 @@ def main() -> int:
     # "0" -> int, selain itu path
     source: int | str = int(args.source) if args.source.isdigit() else args.source
 
-    print(f"[HelmetGuard] memuat model: {args.weights}")
+    print(f"[VIGIL] memuat model: {args.weights}")
     try:
-        detector = HelmetDetector(
+        detector = VigilDetector(
             args.weights, conf=args.conf, imgsz=args.imgsz, device=args.device
         )
     except Exception as exc:
@@ -60,12 +60,12 @@ def main() -> int:
 
     total = cam.total_frames
     if total:
-        print(f"[HelmetGuard] total frame: {total}")
+        print(f"[VIGIL] total frame: {total}")
 
     recorder = Recorder(fps=CAMERA_FPS) if args.record else None
     model_name = Path(args.weights).stem
 
-    print("[HelmetGuard] tekan 'q' untuk keluar")
+    print("[VIGIL] tekan 'q' untuk keluar")
     t_start = time.perf_counter()
     n_frames = 0
 
@@ -73,7 +73,7 @@ def main() -> int:
         while True:
             ok, frame = cam.read()
             if not ok:
-                print("[HelmetGuard] sumber video selesai")
+                print("[VIGIL] sumber video selesai")
                 break
 
             result = detector.predict(frame)
@@ -81,32 +81,32 @@ def main() -> int:
 
             if total and n_frames % 25 == 0:
                 pct = n_frames / total * 100
-                print(f"\r[HelmetGuard] {n_frames}/{total} ({pct:.0f}%)", end="", flush=True)
+                print(f"\r[VIGIL] {n_frames}/{total} ({pct:.0f}%)", end="", flush=True)
 
             if recorder is not None:
                 recorder.write(compose(frame, result, model_name))
                 recorder.log_result(result)
 
             if args.show:
-                cv2.imshow("HelmetGuard AI", compose(frame, result, model_name))
+                cv2.imshow("VIGIL", compose(frame, result, model_name))
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
     except KeyboardInterrupt:
-        print("\n[HelmetGuard] dihentikan user")
+        print("\n[VIGIL] dihentikan user")
     finally:
         cam.release()
         if args.show:
             cv2.destroyAllWindows()
         if recorder is not None:
             vid, log = recorder.close()
-            print(f"[HelmetGuard] video  : {vid}")
-            print(f"[HelmetGuard] events : {log}")
+            print(f"[VIGIL] video  : {vid}")
+            print(f"[VIGIL] events : {log}")
 
     if n_frames:
         elapsed = time.perf_counter() - t_start
         if total:
             print()  # rapikan progress bar
-        print(f"[HelmetGuard] {n_frames} frame dalam {elapsed:.1f}s "
+        print(f"[VIGIL] {n_frames} frame dalam {elapsed:.1f}s "
               f"(avg {n_frames / elapsed:.1f} FPS)")
     return 0
 

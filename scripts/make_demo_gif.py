@@ -17,7 +17,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.config import DOCS_DIR, WEIGHTS_DIR  # noqa: E402
-from src.detector import HelmetDetector  # noqa: E402
+from src.detector import VigilDetector  # noqa: E402
 from src.visualize import compose  # noqa: E402
 
 # Ukuran GIF: LinkedIn optimal di lebar ~640-800px
@@ -36,12 +36,12 @@ def pick_images(n: int) -> list[Path]:
 
 
 def main() -> int:
-    model_path = WEIGHTS_DIR / "helmet_detector.pt"
+    model_path = WEIGHTS_DIR / "vigil_ppe.pt"
     if not model_path.exists():
         print(f"[ERROR] model tidak ditemukan: {model_path}", file=sys.stderr)
         return 1
 
-    detector = HelmetDetector(model_path, conf=0.30, device=0, half=True)
+    detector = VigilDetector(model_path, conf=0.30, device=0, half=True)
 
     candidates = pick_images(N_FRAMES)
     scored: list[tuple[int, Path]] = []
@@ -69,7 +69,7 @@ def main() -> int:
 
         # Header banner supaya jelas ini AI, bukan kamera biasa
         bar = np.full((BANNER_H, GIF_W, 3), 13, dtype=np.uint8)
-        cv2.putText(bar, "HelmetGuard AI  -  Real-time PPE Detection",
+        cv2.putText(bar, "VIGIL  -  Real-time PPE Detection",
                     (12, 23), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (88, 166, 255), 1, cv2.LINE_AA)
 
         out = np.vstack([bar, vis])

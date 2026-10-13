@@ -1,8 +1,8 @@
-# Akses environment HelmetGuard AI
+# Akses environment VIGIL
 # Jalankan di PowerShell:  .\activate_env.ps1
 # Jangan di-source dari Git (sensitive path tidak, tapi tetap bukan best practice).
 
-$ProjectRoot = 'D:\Project\HelmetGuard-AI'
+$ProjectRoot = 'D:\Project\VIGIL-AI'
 $VenvPython  = "$ProjectRoot\.venv\Scripts\python.exe"
 
 if (-not (Test-Path $VenvPython)) {
@@ -25,7 +25,7 @@ Set-Location $ProjectRoot
 function hg { & $VenvPython @args }
 function hgcli { & $VenvPython "$ProjectRoot\scripts\run_cli.py" @args }
 
-Write-Host "HelmetGuard AI aktif" -ForegroundColor Green
+Write-Host "VIGIL aktif" -ForegroundColor Green
 Write-Host "  python : $VenvPython"
 Write-Host "  folder : $ProjectRoot"
 Write-Host "  contoh : hg main.py"

@@ -1,5 +1,5 @@
 """
-HelmetGuard AI - Konfigurasi global.
+VIGIL - Konfigurasi global.
 
 Semua path absolut ke drive D: supaya tidak menyentuh disk C:.
 """
@@ -25,8 +25,8 @@ if getattr(sys, "frozen", False):
     # Folder output: pakai yang bisa ditulis
     OUTPUT_DIR = _first_existing(
         _EXE_DIR / "output",
-        Path.home() / "HelmetGuardAI" / "output",
-        Path(os.environ.get("TEMP", ".")) / "HelmetGuardAI",
+        Path.home() / "VIGIL" / "output",
+        Path(os.environ.get("TEMP", ".")) / "VIGIL",
     )
 else:
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +37,7 @@ RUNS_DIR = BASE_DIR / "runs"
 WEIGHTS_DIR = BASE_DIR / "weights"
 DOCS_DIR = BASE_DIR / "docs"
 
-BEST_MODEL = WEIGHTS_DIR / "helmet_detector.pt"
+BEST_MODEL = WEIGHTS_DIR / "vigil_ppe.pt"
 
 # --- Model -----------------------------------------------------------------
 IMGSZ = 640

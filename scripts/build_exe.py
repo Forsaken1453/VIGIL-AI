@@ -1,4 +1,4 @@
-"""PyInstaller build script -> dist/HelmetGuard/HelmetGuard.exe
+"""PyInstaller build script -> dist/VIGIL/VIGIL.exe
 
 Jalankan:  python scripts/build_exe.py
 """
@@ -28,7 +28,7 @@ def main() -> int:
     cmd = [
         sys.executable, "-m", "PyInstaller",
         "--noconfirm", "--clean",
-        "--name", "HelmetGuard",
+        "--name", "VIGIL",
         "--windowed",                    # tanpa console black box
         "--onedir",                      # lebih cepat start daripada onefile
         "--add-data", f"{WEIGHTS}{os.pathsep}weights",   # isi weights/ -> bundle/weights/
@@ -51,7 +51,7 @@ def main() -> int:
         print("\n[ERROR] Build gagal")
         return result.returncode
 
-    exe = DIST / "HelmetGuard" / "HelmetGuard.exe"
+    exe = DIST / "VIGIL" / "VIGIL.exe"
     if exe.exists():
         size_mb = exe.stat().st_size / 1024 / 1024
         print(f"\n[OK] {exe}")

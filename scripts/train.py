@@ -24,7 +24,7 @@ from src.config import RUNS_DIR, WEIGHTS_DIR, ensure_dirs  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Train HelmetGuard detector")
+    p = argparse.ArgumentParser(description="Train VIGIL detector")
     p.add_argument("--data", required=True, help="path ke data.yaml")
     p.add_argument("--model", default="yolo11n.pt", help="base model, mis. yolo11n.pt / yolo11s.pt")
     p.add_argument("--epochs", type=int, default=60)
@@ -51,7 +51,7 @@ def main() -> int:
     from ultralytics import YOLO
 
     print("=" * 62)
-    print("  HelmetGuard AI - Training")
+    print("  VIGIL - Training")
     print("=" * 62)
     print(f"  data   : {data_path}")
     print(f"  model  : {args.model}")
@@ -96,13 +96,13 @@ def main() -> int:
 
         # Simpan dengan nama varian agar tidak saling timpa
         variant = Path(args.model).stem.replace("yolo", "")  # "yolo11n.pt" -> "11n"
-        variant_dest = WEIGHTS_DIR / f"helmet_detector_{variant}.pt"
+        variant_dest = WEIGHTS_DIR / f"vigil_ppe_{variant}.pt"
         shutil.copy2(best, variant_dest)
         if metrics_src.exists():
             shutil.copy2(metrics_src, variant_dest.with_suffix(".metrics.json"))
 
-        # helmet_detector.pt = model overall terbaik (dipakai GUI)
-        main_dest = WEIGHTS_DIR / "helmet_detector.pt"
+        # vigil_ppe.pt = model overall terbaik (dipakai GUI)
+        main_dest = WEIGHTS_DIR / "vigil_ppe.pt"
         new_mAP = _read_mAP(metrics_src)
         if _is_better(new_mAP, main_dest):
             shutil.copy2(best, main_dest)
@@ -129,7 +129,7 @@ def _read_mAP(metrics_file: Path) -> float | None:
 
 
 def _is_better(new_mAP: float | None, main_dest: Path) -> bool:
-    """True kalau model baru lebih baik dari helmet_detector.pt yang sekarang."""
+    """True kalau model baru lebih baik dari vigil_ppe.pt yang sekarang."""
     if not main_dest.exists():
         return True
 

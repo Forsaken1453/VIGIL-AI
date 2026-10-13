@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Push HelmetGuard AI ke GitHub.
+    Push VIGIL ke GitHub.
 
 .DESCRIPTION
     Menjalankan git remote/push. Saat Git Credential Manager meminta
@@ -12,7 +12,7 @@
 #>
 param(
     [string]$Username = "",
-    [string]$RepoName = "HelmetGuard-AI",
+    [string]$RepoName = "VIGIL-AI",
     [switch]$SkipRemote
 )
 
@@ -20,7 +20,7 @@ $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
 Write-Host ""
-Write-Host "=== HelmetGuard AI - Push ke GitHub ===" -ForegroundColor Cyan
+Write-Host "=== VIGIL - Push ke GitHub ===" -ForegroundColor Cyan
 Write-Host ""
 
 # --- Cek kondisi repo -----------------------------------------------------

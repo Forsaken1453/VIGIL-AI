@@ -62,7 +62,7 @@ class FrameResult:
         return len(self.detections)
 
 
-class HelmetDetector:
+class VigilDetector:
     """Wrapper tipis di atas model YOLO."""
 
     def __init__(
