@@ -55,9 +55,25 @@ visual daripada melihat helmeter secara langsung. Pada dataset ini `no_boots`
 juga hanya punya 88 instance di train (paling langka). Ini limitasi dataset,
 bukan limitasi arsitektur.
 
+### Kurva training & confusion matrix
+
+<details>
+<summary><b>Klik untuk membuka</b> (3 gambar)</summary>
+
+**Training curves**
+![Training curves](docs/training_curves.png)
+
+**Confusion matrix** — diagonal = prediksi benar
+![Confusion matrix](docs/confusion_matrix.png)
+
+**Precision-Recall curve**
+![PR curve](docs/pr_curve.png)
+
+</details>
+
 ### Preview aplikasi
 
-![GUI](docs/gui_live_fixed.png)
+![GUI](docs/gui_screenshot.jpg)
 
 GUI desktop (CustomTkinter) berjalan real-time dari webcam: bounding box per
 kelas, HUD FPS/inference, panel statistik, dan event log untuk tiap pelanggaran.
@@ -66,7 +82,14 @@ melewati yang tertutup privacy shutter (frame hitam).
 
 ### Hasil deteksi pada test set
 
-![Test set](docs/demo_custom_model.jpg)
+![Detection grid](docs/detections_grid.jpg)
+
+Enam frame dari **test set** (141 gambar yang tidak pernah dilihat saat training).
+Kotak hijau = APD terpasang, merah = pelanggaran.
+
+### Contoh frame tunggal
+
+![Demo frame](docs/demo_frame.jpg)
 
 ---
 
