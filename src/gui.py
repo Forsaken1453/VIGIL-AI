@@ -10,16 +10,17 @@ Desain:
 
 from __future__ import annotations
 
+import contextlib
 import sys
 import threading
 import time
+import tkinter as tk
 import traceback
 from pathlib import Path
 from typing import Any
 
-import cv2
 import customtkinter as ctk
-import tkinter as tk
+import cv2
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -28,7 +29,6 @@ from src.config import (  # noqa: E402
     BEST_MODEL,
     CAMERA_FPS,
     CAMERA_HEIGHT,
-    CAMERA_INDEX,
     CAMERA_WIDTH,
     DEFAULT_CONF,
     IMGSZ,
@@ -200,8 +200,12 @@ class VigilApp(ctk.CTk):
         ):
             cell = ctk.CTkFrame(strip, fg_color="#0d1117", corner_radius=8)
             cell.grid(row=0, column=i, sticky="ew", padx=4)
-            ctk.CTkLabel(cell, text=label, font=ctk.CTkFont(size=11), text_color=FG_DIM).pack(pady=(6, 0))
-            val = ctk.CTkLabel(cell, text="-", font=ctk.CTkFont(size=18, weight="bold"), text_color=FG)
+            ctk.CTkLabel(
+                cell, text=label, font=ctk.CTkFont(size=11), text_color=FG_DIM
+            ).pack(pady=(6, 0))
+            val = ctk.CTkLabel(
+                cell, text="-", font=ctk.CTkFont(size=18, weight="bold"), text_color=FG
+            )
             val.pack(pady=(0, 6))
             self.stat_labels[key] = val
 
@@ -227,20 +231,23 @@ class VigilApp(ctk.CTk):
             font=ctk.CTkFont(size=14, weight="bold"),
             fg_color="#238636", hover_color="#2ea043", command=self._toggle_detection,
         )
-        self.btn_start.grid(row=r, column=0, sticky="ew", padx=18); r += 1
+        self.btn_start.grid(row=r, column=0, sticky="ew", padx=18)
+        r += 1
 
         self.btn_record = ctk.CTkButton(
             side, text="Start Recording", height=36, state="disabled",
             command=self._toggle_record,
         )
-        self.btn_record.grid(row=r, column=0, sticky="ew", padx=18, pady=(8, 0)); r += 1
+        self.btn_record.grid(row=r, column=0, sticky="ew", padx=18, pady=(8, 0))
+        r += 1
 
         section("Sumber")
         self.entry_source = ctk.CTkEntry(
             side, placeholder_text="auto / 0 = webcam / path video", height=34,
         )
         self.entry_source.insert(0, "auto")
-        self.entry_source.grid(row=r, column=0, sticky="ew", padx=18); r += 1
+        self.entry_source.grid(row=r, column=0, sticky="ew", padx=18)
+        r += 1
 
         section("Model")
         # Scan weights/ supaya model baru otomatis muncul tanpa edit kode
@@ -257,20 +264,24 @@ class VigilApp(ctk.CTk):
 
         self.combo_model = ctk.CTkOptionMenu(side, values=options, height=34)
         self.combo_model.set(default)
-        self.combo_model.grid(row=r, column=0, sticky="ew", padx=18); r += 1
+        self.combo_model.grid(row=r, column=0, sticky="ew", padx=18)
+        r += 1
 
         ctk.CTkLabel(
             side, text="Threshold confidence", font=ctk.CTkFont(size=12), text_color=FG_DIM,
-        ).grid(row=r, column=0, sticky="w", padx=18, pady=(14, 0)); r += 1
+        ).grid(row=r, column=0, sticky="w", padx=18, pady=(14, 0))
+        r += 1
 
         self.slider_conf = ctk.CTkSlider(
             side, from_=0.1, to=0.9, number_of_steps=16, command=self._on_conf_change,
         )
         self.slider_conf.set(DEFAULT_CONF)
-        self.slider_conf.grid(row=r, column=0, sticky="ew", padx=18); r += 1
+        self.slider_conf.grid(row=r, column=0, sticky="ew", padx=18)
+        r += 1
 
         self.label_conf = ctk.CTkLabel(side, text=f"{DEFAULT_CONF:.2f}", text_color=ACCENT)
-        self.label_conf.grid(row=r, column=0, padx=18, pady=(0, 4)); r += 1
+        self.label_conf.grid(row=r, column=0, padx=18, pady=(0, 4))
+        r += 1
 
         section("Event Log")
         self.logbox = ctk.CTkTextbox(side, height=180, font=ctk.CTkFont(family="Consolas", size=11))
@@ -327,7 +338,9 @@ class VigilApp(ctk.CTk):
                     "Semua kamera hitam. Buka privacy shutter laptop / "
                     "nyalakan aplikasi iVCam, lalu coba lagi.", ERR,
                 )
-                self.btn_start.configure(text="Start Detection", fg_color="#238636", hover_color="#2ea043")
+                self.btn_start.configure(
+                text="Start Detection", fg_color="#238636", hover_color="#2ea043"
+            )
                 return
             source: int | str = idx
             self._log(f"kamera dipilih otomatis: index {idx}", OK)
@@ -358,11 +371,15 @@ class VigilApp(ctk.CTk):
     def _toggle_record(self) -> None:
         if self.recorder is None:
             self.recorder = Recorder(fps=CAMERA_FPS)
-            self.btn_record.configure(text="Stop Recording", fg_color="#9e2a2b", hover_color="#c23b3c")
+            self.btn_record.configure(
+                text="Stop Recording", fg_color="#9e2a2b", hover_color="#c23b3c"
+            )
             self._log(f"rekam -> {self.recorder.video_path.name}", OK)
         else:
             self.recorder.close()
-            self.btn_record.configure(text="Start Recording", fg_color="#3b82f6", hover_color="#2563eb")
+            self.btn_record.configure(
+                text="Start Recording", fg_color="#3b82f6", hover_color="#2563eb"
+            )
             self.recorder = None
             self._log("rekaman dihentikan", OK)
 
@@ -403,7 +420,12 @@ class VigilApp(ctk.CTk):
                     with self._lock:
                         self.recorder.write(annotated)
                         for ev in self.recorder.log_result(result):
-                            self.after(0, self._log, f"VIOLATION {ev['class']} {ev['confidence']:.0%}", ERR)
+                            self.after(
+                        0,
+                        self._log,
+                        f"VIOLATION {ev['class']} {ev['confidence']:.0%}",
+                        ERR,
+                    )
 
                 self._last_frame = annotated
                 self._last_result = result
@@ -428,7 +450,7 @@ class VigilApp(ctk.CTk):
             self._set_status("Siap", FG_DIM)
 
     # ---------------------------------------------------------------- pump
-    def _pump(self) -> """VigilApp""" | None:
+    def _pump(self) -> VigilApp | None:
         """Tarik frame dari worker, konversi ke PhotoImage, tampilkan. Dipanggil ~30x/detik."""
         if self._frame_ready.is_set():
             self._frame_ready.clear()
@@ -471,10 +493,9 @@ class VigilApp(ctk.CTk):
     def _on_close(self) -> None:
         self.running = False
         if self.recorder is not None:
-            try:
+            # Kegagalan menutup recorder tidak boleh menghalangi jendela tutup.
+            with contextlib.suppress(Exception):
                 self.recorder.close()
-            except Exception:
-                pass
         if self.cam is not None:
             self.cam.release()
         self.destroy()

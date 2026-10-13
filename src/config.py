@@ -4,9 +4,9 @@ VIGIL - Konfigurasi global.
 Semua path absolut ke drive D: supaya tidak menyentuh disk C:.
 """
 
-from pathlib import Path
 import os
 import sys
+from pathlib import Path
 
 
 def _first_existing(*candidates: Path) -> Path:

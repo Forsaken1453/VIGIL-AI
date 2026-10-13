@@ -12,7 +12,7 @@ import cv2
 import numpy as np
 
 from .config import VIOLATION_CLASSES
-from .detector import Detection, FrameResult
+from .detector import FrameResult
 
 
 def draw_detections(frame: np.ndarray, result: FrameResult) -> np.ndarray:

@@ -88,7 +88,7 @@ class Recorder:
             self.log_path.write_text("", encoding="utf-8")
         return self.video_path, self.log_path
 
-    def __enter__(self) -> "Recorder":
+    def __enter__(self) -> Recorder:
         return self
 
     def __exit__(self, *exc) -> None:

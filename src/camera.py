@@ -6,7 +6,7 @@ Dipisah dari GUI supaya logika capture bisa diuji tanpa window.
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 
 import cv2
@@ -19,7 +19,7 @@ from .config import (
 )
 
 
-class SourceType(str, Enum):
+class SourceType(StrEnum):
     WEBCAM = "webcam"
     VIDEO_FILE = "video"
     IMAGE = "image"
@@ -140,7 +140,7 @@ class VideoSource:
             if not self.cap.isOpened():
                 raise RuntimeError(f"Tidak bisa membuka video: {self.path}")
 
-    def _read_dir(self) -> tuple[bool, "cv2.Mat | None"]:
+    def _read_dir(self) -> tuple[bool, cv2.Mat | None]:
         """Baca gambar berikutnya dari folder."""
         if self._img_idx >= len(self._images):
             if not self.loop:
@@ -152,7 +152,7 @@ class VideoSource:
             return False, None
         return True, img
 
-    def read(self) -> tuple[bool, "cv2.Mat | None"]:
+    def read(self) -> tuple[bool, cv2.Mat | None]:
         """Baca satu frame. Returns (ok, frame)."""
         if self.source_type is SourceType.IMAGE_DIR:
             return self._read_dir()
@@ -181,7 +181,7 @@ class VideoSource:
         if self.cap is not None:
             self.cap.release()
 
-    def __enter__(self) -> "VideoSource":
+    def __enter__(self) -> VideoSource:
         return self
 
     def __exit__(self, *exc) -> None:

@@ -90,9 +90,8 @@ class VigilDetector:
     @staticmethod
     def _detect_quantize_api() -> bool:
         """Ultralytics >= 8.4 deprecate 'half', menggantinya dengan 'quantize'."""
-        from packaging.version import parse
-
         import ultralytics
+        from packaging.version import parse
 
         return parse(ultralytics.__version__) >= parse("8.4.0")
 
@@ -137,10 +136,13 @@ class VigilDetector:
         if boxes is None:
             return detections
 
+        # strict=True: ketiga array dari YOLO selalu sama panjang. Kalau tidak,
+        # itu berarti bug upstream yang lebih baik ketahuan sekarang.
         for xyxy, conf, cls in zip(
             boxes.xyxy.cpu().numpy(),
             boxes.conf.cpu().numpy(),
             boxes.cls.cpu().numpy().astype(int),
+            strict=True,
         ):
             detections.append(
                 Detection(

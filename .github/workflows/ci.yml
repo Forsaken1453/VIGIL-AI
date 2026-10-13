@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # CPU-only torch agar CI jalan tanpa GPU (wheel jauh lebih kecil)
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          pip install pytest ruff pyyaml
+
+      - name: Lint with ruff
+        run: ruff check src/ scripts/ tests/
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+  build-exe:
+    name: Build Windows executable
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      # Model tidak ada di repo (dihasilkan lewat training), jadi build di
+      # sini hanya membuktikan PyInstaller bisa mengemas project - bukan
+      # memvalidasi model.
+      - name: Build with PyInstaller
+        run: |
+          pyinstaller --noconfirm --clean --name VIGIL --windowed --onedir main.py
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: VIGIL-windows
+          path: dist/VIGIL/
+          retention-days: 7

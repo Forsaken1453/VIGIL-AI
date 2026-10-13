@@ -7,9 +7,12 @@
 *Dari Latin* **vigilare** — *berjaga*. Kamera yang tidak pernah tidur, menandai
 pelanggaran di detik yang sama — semua berjalan di GPU laptop 6 GB.
 
+![CI](https://github.com/Forsaken1453/VIGIL-AI/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB)
 ![Ultralytics](https://img.shields.io/badge/YOLO-8.4-FF3333)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.11%20cu128-EE4C2C)
+![Tests](https://img.shields.io/badge/tests-81%20passed-3fb950)
+![Ruff](https://img.shields.io/badge/lint-ruff-261230)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 Deteksi helmet, rompi, sarung tangan, sepatu, kacamata keamanan — serta
@@ -195,12 +198,37 @@ python scripts\compare_models.py
 Script training otomatis menyalin model terbaik ke `weights/` **hanya jika mAP-nya
 meningkat**, jadi `vigil_ppe.pt` selalu berisi model terbaik.
 
+## 🧪 Testing & Kualitas Kode
+
+[![CI](https://github.com/Forsaken1453/VIGIL-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/Forsaken1453/VIGIL-AI/actions/workflows/ci.yml)
+
+```bash
+pytest tests/ -v      # 81 test
+ruff check src/ scripts/ tests/
+```
+
+Test suite ini tidak membutuhkan GPU maupun kamera fisik — parsing output YOLO,
+penulisan MP4, event log, dan pemilihan kamera di-mock. Yang diuji:
+
+| File test | Cakupan |
+|---|---|
+| `test_detector.py` | Parsing bbox YOLO, statistik, clamping threshold |
+| `test_recorder.py` | Output MP4 valid, JSONL per baris, logika cooldown per kelas |
+| `test_camera.py` | Deteksi tipe sumber, iterasi folder, pemilihan kamera non-hitam |
+| `test_visualize.py` | Bentuk frame, overlay, invariants warna kelas |
+
+CI berjalan di **Python 3.11 & 3.12**, menjalankan lint + test, lalu build
+Windows executable sebagai artefak.
+
 ## 📁 Struktur Folder
 
 ```
 VIGIL-AI\
 ├─ main.py                  # entry point GUI
+├─ pyproject.toml           # metadata + konfigurasi ruff/pytest
 ├─ activate_env.ps1         # aktivasi env + alias (hg, hgcli)
+├─ create_shortcut.ps1      # shortcut Desktop & Start Menu
+├─ push_to_github.ps1       # helper push
 ├─ src\
 │  ├─ config.py             # path, threshold, warna kelas
 │  ├─ detector.py           # wrapper YOLO + statistik
@@ -212,12 +240,22 @@ VIGIL-AI\
 │  ├─ train.py              # training runner
 │  ├─ run_cli.py            # CLI detector
 │  ├─ list_cameras.py       # deteksi kamera
-│  └─ compare_models.py     # tabel perbandingan model
+│  ├─ compare_models.py     # tabel perbandingan model
+│  ├─ build_exe.py          # PyInstaller
+│  ├─ make_demo_gif.py      # GIF untuk media sosial
+│  └─ make_docs_images.py   # gambar dokumentasi README
+├─ tests\                   # 81 unit test (pytest)
+│  ├─ conftest.py           # fixture & mock YOLO
+│  ├─ test_detector.py
+│  ├─ test_recorder.py
+│  ├─ test_camera.py
+│  └─ test_visualize.py
+├─ .github\workflows\ci.yml # lint + test + build
 ├─ data\                    # dataset (YOLO format)
 ├─ runs\                    # output training (grafik, confusion matrix)
 ├─ weights\                 # model .pt + metrics.json
 ├─ output\                  # MP4 + JSONL hasil deteksi
-└─ docs\                    # screenshot & demo
+└─ docs\                    # screenshot, GIF, draft caption
 ```
 
 ---

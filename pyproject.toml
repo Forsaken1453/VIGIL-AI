@@ -1,0 +1,66 @@
+[project]
+name = "vigil"
+version = "0.1.0"
+description = "Real-time construction safety helmet & APD detection with YOLO11"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Muhammad Wildan Setyawan" }]
+keywords = [
+    "computer-vision",
+    "object-detection",
+    "yolo",
+    "pytorch",
+    "construction-safety",
+    "ppe",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [".venv", "dist", "build", "runs", "data"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # bugbear
+    "UP",   # pyupgrade
+    "SIM",  # simplify
+    "C4",   # comprehensions
+]
+ignore = [
+    # E402: import sengaja tidak di atas file karena sys.path di-set dulu
+    # (src/ dan scripts/ harus bisa diimpor tanpa install package).
+    "E402",
+    # B008: fastapi-style dependency injection tidak relevan di sini
+    "B008",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test sengaja memakai import setelah sys.path setup
+"tests/*" = ["E402"]
+# scripts/ mengimpor src/ lewat sys.path.insert manual
+"scripts/*" = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
