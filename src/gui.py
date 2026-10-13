@@ -184,7 +184,9 @@ class HelmetGuardApp(ctk.CTk):
             bd=0,
         )
         self.image_label.grid(row=0, column=0, rowspan=2, sticky="nsew")
-        self.image_label.lower()
+        # JANGAN .lower() di sini: CTkFrame digambar di atas Canvas, sehingga
+        # label yang diturunkan akan tertutup dan preview tidak terlihat.
+        # Label dinaikkan (lift) nanti saat deteksi dimulai.
 
         # Stat strip di bawah preview
         strip = ctk.CTkFrame(wrap, fg_color="transparent")
@@ -335,6 +337,7 @@ class HelmetGuardApp(ctk.CTk):
         self.btn_start.configure(text="Stop", fg_color="#9e2a2b", hover_color="#c23b3c")
         self.btn_record.configure(state="normal")
         self.placeholder.grid_remove()
+        self.image_label.lift()          # pastikan di atas, bukan di bawah
         self._set_status("Memuat model...", WARN)
         self._log(f"memuat {Path(weights).name}")
 
