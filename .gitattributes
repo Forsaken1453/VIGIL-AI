@@ -1,0 +1,24 @@
+* text=auto eol=lf
+
+# Source & docs: LF (konsisten di semua OS)
+*.py   text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.spec text eol=lf
+
+# Script PowerShell harus CRLF agar jalan di Windows
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Binary - jangan disentuh
+*.pt   binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.mp4  binary
+*.zip  binary
+*.exe  binary
